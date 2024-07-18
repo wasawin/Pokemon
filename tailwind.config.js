@@ -28,12 +28,8 @@ export default {
   safelist: [
     {
       pattern:
-        /^(shadow)-(bug|dark|dragon|electric|fairy|fighting|fire|flying|ghost|normal|grass|ground|ice|poison|psychic|rock|steel|water)$/,
+        /^(shadow|bg|text)-(bug|dark|dragon|electric|fairy|fighting|fire|flying|ghost|normal|grass|ground|ice|poison|psychic|rock|steel|water)$/,
       variants: ['hover', 'focus', 'active'],
-    },
-    {
-      pattern:
-        /^(bg|text)-(bug|dark|dragon|electric|fairy|fighting|fire|flying|ghost|normal|grass|ground|ice|poison|psychic|rock|steel|water)$/,
     },
   ],
   plugins: [],
