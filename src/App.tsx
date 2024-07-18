@@ -41,12 +41,15 @@ function App() {
       {loading && <Loading />}
       <main className="    p-10">
         <h1 className="text-center text-3xl my-4">Pokedex</h1>
-        <article className="flex flex-wrap justify-center items-center gap-2 ">
+        <article
+          className="grid grid-cols-2 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 
+        ` gap-3 2xl:gap-4"
+        >
           {pokemondata.map((pokemon) => {
             return (
               <div
                 key={pokemon.id}
-                className={`flex flex-col text-center p-4  hover:bg-white border-black border-2 rounded-xl shadow-md `}
+                className={`flex flex-col text-center p-4   border-black border-2 rounded-xl shadow-md hover:bg-slate-300 hover:shadow-${pokemon.types[0].type.name}`}
               >
                 <h4 className="text-end">#{pokemon.id}</h4>
                 <img src={pokemon.sprites.front_default} alt={pokemon.name} />
