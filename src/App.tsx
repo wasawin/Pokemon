@@ -13,11 +13,10 @@ function Loading() {
 }
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [pokemondata, setPokemonData] = useState<Pokemon[]>([]);
 
   const fetchPokemonall = async () => {
-    setLoading(true);
     const res = await axios.get(
       'https://pokeapi.co/api/v2/pokemon/?limit=60&offset=0'
     );
@@ -31,7 +30,7 @@ function App() {
     setLoading(false);
   };
 
-  // console.log(pokemondata);
+  console.log(pokemondata);
 
   useEffect(() => {
     fetchPokemonall();
@@ -40,19 +39,22 @@ function App() {
   return (
     <>
       {loading && <Loading />}
-      <main className=" bg-red-200   p-10">
+      <main className="    p-10">
         <h1 className="text-center text-3xl my-4">Pokedex</h1>
         <article className="flex flex-wrap justify-center items-center gap-2 ">
-          {pokemondata.map((pokemon) => (
-            <div
-              key={pokemon.id}
-              className="flex flex-col text-center p-4 hover:bg-white border-black border-2 rounded-xl"
-            >
-              <h4 className="text-end">#{pokemon.id}</h4>
-              <img src={pokemon.sprites.front_default} alt={pokemon.name} />
-              <h2>{pokemon.name}</h2>
-            </div>
-          ))}
+          {pokemondata.map((pokemon) => {
+            return (
+              <div
+                key={pokemon.id}
+                className={`flex flex-col text-center p-4  hover:bg-white border-black border-2 rounded-xl shadow-md `}
+              >
+                <h4 className="text-end">#{pokemon.id}</h4>
+                <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+                <h2>{pokemon.name}</h2>
+                <h2>{pokemon.types[0].type.name}</h2>
+              </div>
+            );
+          })}
         </article>
       </main>
     </>
