@@ -1,17 +1,27 @@
 // src/components/ErrorPage.tsx
-import { useRouteError } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';
 
 export default function ErrorPage() {
-  const error = useRouteError() as { statusText?: string; message?: string };
-  console.error(error);
+  const { message } = useRouteError() as { message: string };
 
   return (
-    <div id="error-page" className="text-center p-10">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
+    <div className="grid h-screen place-content-center bg-white px-4">
+      <div className="text-center">
+        <h1 className="text-9xl font-black text-gray-200">404</h1>
+
+        <p className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          Uh-oh!
+        </p>
+
+        {message && <p className="mt-4 text-gray-500">{message}</p>}
+
+        <Link
+          to="/"
+          className="mt-6 inline-block rounded bg-indigo-600 px-5 py-3 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring"
+        >
+          Go Back Home
+        </Link>
+      </div>
     </div>
   );
 }

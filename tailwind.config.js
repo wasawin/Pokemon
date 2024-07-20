@@ -28,7 +28,7 @@ export default {
   safelist: [
     {
       pattern:
-        /^(shadow|bg|text)-(bug|dark|dragon|electric|fairy|fighting|fire|flying|ghost|normal|grass|ground|ice|poison|psychic|rock|steel|water)$/,
+        /^(shadow|bg|text|from|to)-(bug|dark|dragon|electric|fairy|fighting|fire|flying|ghost|normal|grass|ground|ice|poison|psychic|rock|steel|water)$/,
       variants: ['hover', 'focus', 'active'],
     },
   ],

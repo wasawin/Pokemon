@@ -54,7 +54,13 @@ function App() {
                   className={`flex flex-col text-center p-4   border-black border-2 rounded-xl shadow-md hover:bg-slate-300 hover:shadow-${pokemon.types[0].type.name}`}
                 >
                   <h4 className="text-end">#{pokemon.id}</h4>
-                  <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+                  <img
+                    key={pokemon.id}
+                    src={
+                      pokemon.sprites.other?.['official-artwork'].front_default
+                    }
+                    alt={pokemon.name}
+                  />
                   <h2>{pokemon.name}</h2>
                 </div>
               </Link>
