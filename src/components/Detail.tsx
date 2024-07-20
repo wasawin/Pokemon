@@ -69,7 +69,7 @@ function Detail() {
                 <div>Height</div>
               </div>
               <div>
-                <div>{pokemon.height} kg</div>
+                <div>{pokemon.moves[0].move.name}</div>
                 <div>Move</div>
               </div>
             </div>
