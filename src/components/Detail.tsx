@@ -39,7 +39,7 @@ function Detail() {
           <img
             src={pokemon.sprites.other?.['official-artwork'].front_default}
             alt={pokemon.name}
-            className=" z-10  translate-y-40 sm:translate-y-7 mx-auto max-sm:max-w-60  "
+            className=" z-10  translate-y-20 sm:translate-y-7 mx-auto max-sm:max-w-60  "
           />
         </div>
         {/* section bottom */}
