@@ -52,7 +52,9 @@ function App() {
                   key={pokemon.id}
                   className={`flex flex-col text-center p-4 bg-white gap-2   border-black border-4 rounded-xl shadow-md hover:bg-slate-300 hover:shadow-${pokemon.types[0].type.name}`}
                 >
-                  <h4 className="text-end">#{pokemon.id}</h4>
+                  <h4 className="text-end">
+                    #{pokemon.id.toString().padStart(4, '0')}
+                  </h4>
                   <img
                     key={pokemon.name + pokemon.id}
                     src={

@@ -3,11 +3,9 @@ import { Pokemon } from '../type/PokemonType';
 import { IoIosArrowBack } from 'react-icons/io';
 // import { TbPokeball } from 'react-icons/tb';
 import pokeball from '../assets/pokeball.png';
+
 function Detail() {
   const pokemon = useLoaderData() as Pokemon;
-  function addZero(num: number): string {
-    return num.toString().padStart(4, '0');
-  }
 
   return (
     <main className="min-h-screen w-full flex justify-center items-center  overflow-y-auto  bg-Primary">
@@ -26,7 +24,7 @@ function Detail() {
               </div>
               <h1 className="first-letter:uppercase">{pokemon.name}</h1>
             </Link>
-            <h1>#{addZero(pokemon.id)}</h1>
+            <h1>#{pokemon.id.toString().padStart(4, '0')}</h1>
           </div>
           {/* pokemon ball background */}
           <img
@@ -57,7 +55,7 @@ function Detail() {
             })}
           </div>
           {/* pokemon about */}
-          <div className="text-center flex flex-col justify-evenly h-full">
+          <div className="text-center flex flex-col justify-start gap-3 h-full">
             <h1
               className={`text-xl py-3  font-bold text-${pokemon.types[0].type.name}`}
             >
