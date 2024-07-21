@@ -40,25 +40,27 @@ function App() {
   return (
     <>
       {loading && <Loading />}
-      <main className=" p-3 sm:p-10 overflow-y-auto">
-        <h1 className="text-center text-3xl my-4">Pokedex</h1>
+      <main className=" p-3 sm:p-10 overflow-y-auto bg-Primary">
+        <h1 className="text-center text-3xl text-white font-bold my-4">
+          Pokedex
+        </h1>
         <article className="grid grid-cols-2 lg:grid-cols-5 gap-3 2xl:gap-4">
           {pokemondata.map((pokemon) => {
             return (
               <Link to={`/${pokemon.id}`}>
                 <div
                   key={pokemon.id}
-                  className={`flex flex-col text-center p-4   border-black border-2 rounded-xl shadow-md hover:bg-slate-300 hover:shadow-${pokemon.types[0].type.name}`}
+                  className={`flex flex-col text-center p-4 bg-white gap-2   border-black border-4 rounded-xl shadow-md hover:bg-slate-300 hover:shadow-${pokemon.types[0].type.name}`}
                 >
                   <h4 className="text-end">#{pokemon.id}</h4>
                   <img
-                    key={pokemon.name}
+                    key={pokemon.name + pokemon.id}
                     src={
                       pokemon.sprites.other?.['official-artwork'].front_default
                     }
                     alt={pokemon.name}
                   />
-                  <h2>{pokemon.name}</h2>
+                  <h2 className=" sm:text-xl">{pokemon.name}</h2>
                 </div>
               </Link>
             );
