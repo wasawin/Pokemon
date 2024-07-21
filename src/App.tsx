@@ -19,7 +19,7 @@ function App() {
 
   const fetchPokemonall = async () => {
     const res = await axios.get(
-      'https://pokeapi.co/api/v2/pokemon/?limit=10&offset=0'
+      'https://pokeapi.co/api/v2/pokemon/?limit=100&offset=0'
     );
     const detailedPokemon = await Promise.all(
       res.data.results.map(async (pokemon: Result) => {
@@ -40,12 +40,9 @@ function App() {
   return (
     <>
       {loading && <Loading />}
-      <main className=" p-10">
+      <main className=" p-3 sm:p-10 overflow-y-auto">
         <h1 className="text-center text-3xl my-4">Pokedex</h1>
-        <article
-          className="grid grid-cols-2 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 
-        ` gap-3 2xl:gap-4"
-        >
+        <article className="grid grid-cols-2 lg:grid-cols-5 gap-3 2xl:gap-4">
           {pokemondata.map((pokemon) => {
             return (
               <Link to={`/${pokemon.id}`}>
@@ -55,7 +52,7 @@ function App() {
                 >
                   <h4 className="text-end">#{pokemon.id}</h4>
                   <img
-                    key={pokemon.id}
+                    key={pokemon.name}
                     src={
                       pokemon.sprites.other?.['official-artwork'].front_default
                     }

@@ -6,21 +6,23 @@ import pokeball from '../assets/pokeball.png';
 function Detail() {
   const pokemon = useLoaderData() as Pokemon;
   function addZero(num: number): string {
-    return num.toString().padStart(3, '0');
+    return num.toString().padStart(4, '0');
   }
 
   return (
-    <main className="h-screen flex justify-center items-center ">
-      <article className="bg-red-200 rounded-xl h-full  max-w-md w-full p-2 shadow-md  flex  flex-col sm:flex-row">
+    <main className="min-h-screen flex justify-center items-center  overflow-y-auto">
+      <article
+        className={`bg-${pokemon.types[0].type.name} relative  flex  flex-col w-full   sm:max-w-xl  p-2  sm:shadow-md sm:rounded-xl sm:flex-row  sm:border-4 sm:border-black`}
+      >
         {/* section top */}
-        <div
-          className={` bg-${pokemon.types[0].type.name} flex flex-col items-center p-6 relative min-h-[50%]`}
-        >
+        <div className={`relative p-4`}>
           {/* tap on top */}
           <div className="flex justify-between items-center w-full font-bold text-white">
-            <Link to="/" className="flex justify-start items-center gap-2">
-              <IoIosArrowBack className="text-white" />
-              <h1>{pokemon.name}</h1>
+            <Link to="/" className="flex px-1 items-center gap-2 z-20 group">
+              <div className="rounded-full p-0.5 group-hover:bg-gray-200 ">
+                <IoIosArrowBack className="text-white group-hover:text-black" />
+              </div>
+              <h1 className="first-letter:uppercase">{pokemon.name}</h1>
             </Link>
             <h1>#{addZero(pokemon.id)}</h1>
           </div>
@@ -28,20 +30,20 @@ function Detail() {
           <img
             src={pokeball}
             alt=""
-            className="absolute opacity-15 size-40 top-2 right-2 text-black "
+            className="absolute opacity-15 size-40 top-2 right-2 sm:left-1/4 text-black  aspect-square"
           />
 
           {/* image */}
           <img
             src={pokemon.sprites.other?.['official-artwork'].front_default}
             alt={pokemon.name}
-            className="w-full h-56 p-5 z-10 absolute "
+            className=" z-10  translate-y-1/3 sm:translate-y-[10%]"
           />
         </div>
         {/* section bottom */}
-        <div className="w-full h-auto p-4 bg-white flex flex-col">
+        <div className="p-4 bg-white flex flex-col rounded-lg ">
           {/* pokemon type */}
-          <div className="flex gap-2 flex-row justify-center items-center">
+          <div className="flex gap-2 flex-row justify-center items-center mt-20 sm:mt-0">
             {pokemon.types.map((pokemon) => {
               return (
                 <div
@@ -65,7 +67,7 @@ function Detail() {
                 <div>Weight</div>
               </div>
               <div>
-                <div>{pokemon.height} kg</div>
+                <div>{pokemon.height} m</div>
                 <div>Height</div>
               </div>
               <div>
@@ -74,11 +76,11 @@ function Detail() {
               </div>
             </div>
             {/* pokemon stat */}
-            <div className="p-3 ">
+            <div className="p-3 grid grid-cols-3 gap-4 text-center ">
               {pokemon.stats.map((pokemon) => (
-                <div className="grid grid-cols-2 divide-x">
-                  <div className="text-start">{pokemon.stat.name}</div>
-                  <div className="text-center">{pokemon.base_stat}</div>
+                <div className="grid grid-cols-1 divide-y">
+                  <div className="">{pokemon.stat.name}</div>
+                  <div className="">{pokemon.base_stat}</div>
                 </div>
               ))}
             </div>
