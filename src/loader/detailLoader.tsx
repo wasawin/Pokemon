@@ -8,7 +8,7 @@ export const detailLoader = async ({
     `https://pokeapi.co/api/v2/pokemon/${params.pokemonId}`
   );
   if (!result.data) {
-    throw new Response('No pokemon found', { status: 500 });
+    throw new Response('No pokemon found', { status: 404 });
   }
   const pokemondetail = result.data;
   return pokemondetail;
