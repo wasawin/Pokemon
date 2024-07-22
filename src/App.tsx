@@ -7,25 +7,16 @@ import Loading from './components/Loading';
 function App() {
   const [loading, setLoading] = useState(true);
   const [pokemondata, setPokemonData] = useState<Pokemon[]>([]);
-  const [next, setNext] = useState<string | null>(null);
-  const [previous, setPrevious] = useState<string | null>(null);
-  const baseurl = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=10';
-  const fetchPokemonall = async (url: string = baseurl) => {
+  const [nextPage, setNextPage] = useState<string>();
+  const [prevPage, setPrevPage] = useState<string>();
+  const [currentPageUrl, setCurrentPageUrl] = useState<string>(
+    'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20'
+  );
+  const fetchPokemonall = async () => {
     setLoading(true);
-    const res = await axios.get(`${url}`);
-    if (res.data.next) {
-      setNext(res.data.next);
-    }
-    if (res.data.previos) {
-      setPrevious(res.data.previos);
-    }
-    console.log(res.data.previous);
-
-    console.log(res.data.previous);
-    console.log(previous);
-    console.log(res.data.next);
-    console.log(next);
-
+    const res = await axios.get(currentPageUrl);
+    setNextPage(res.data.next);
+    setPrevPage(res.data.previous);
     const detailedPokemon = await Promise.all(
       res.data.results.map(async (pokemon: Result) => {
         const detailResponse = await axios.get(pokemon.url);
@@ -41,12 +32,20 @@ function App() {
 
   useEffect(() => {
     fetchPokemonall();
-  }, []);
+  }, [currentPageUrl]);
+
+  function gotoNextPage() {
+    nextPage && setCurrentPageUrl(nextPage);
+  }
+
+  function gotoPrevPage() {
+    prevPage && setCurrentPageUrl(prevPage);
+  }
 
   return (
     <>
       {loading && <Loading />}
-      <main className=" p-3 sm:p-10 overflow-y-auto bg-Primary">
+      <main className="min-h-screen p-3 sm:p-10 overflow-y-auto bg-Primary">
         <h1 className="text-center text-3xl text-white font-bold my-4">
           Pokedex
         </h1>
@@ -75,12 +74,17 @@ function App() {
         </article>
         <div className="flex justify-center gap-4 items-center p-2">
           <button
-            className={`${previous == null ? 'hidden' : 'bg-red-500'}`}
-            onClick={() => fetchPokemonall(previous)}
+            className={`${!prevPage ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={() => gotoPrevPage()}
+            disabled={!prevPage}
           >
-            Previos{previous}
+            Previous
           </button>
-          <button className={``} onClick={() => fetchPokemonall(next)}>
+          <button
+            className={`${!nextPage ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={() => gotoNextPage()}
+            disabled={!prevPage}
+          >
             Next
           </button>
         </div>
