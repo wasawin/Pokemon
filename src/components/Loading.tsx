@@ -1,4 +1,3 @@
-import React from 'react';
 import { MdOutlineCatchingPokemon } from 'react-icons/md';
 
 function Loading() {

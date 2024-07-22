@@ -5,7 +5,6 @@ import pokeball from '../assets/pokeball.png';
 
 function Detail() {
   const pokemon = useLoaderData() as Pokemon;
-
   return (
     <>
       <main className="min-h-screen w-full flex justify-center items-center  overflow-y-auto  bg-Primary">

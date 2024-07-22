@@ -9,29 +9,35 @@ function App() {
   const [pokemondata, setPokemonData] = useState<Pokemon[]>([]);
   const [nextPage, setNextPage] = useState<string>();
   const [prevPage, setPrevPage] = useState<string>();
-  const [currentPageUrl, setCurrentPageUrl] = useState<string>(
-    'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20'
-  );
+  const [currentPageUrl, setCurrentPageUrl] = useState<string>(() => {
+    return (
+      localStorage.getItem('currentPageUrl') ||
+      'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20'
+    );
+  });
+
   const fetchPokemonall = async () => {
     setLoading(true);
-    const res = await axios.get(currentPageUrl);
-    setNextPage(res.data.next);
-    setPrevPage(res.data.previous);
-    const detailedPokemon = await Promise.all(
-      res.data.results.map(async (pokemon: Result) => {
-        const detailResponse = await axios.get(pokemon.url);
-        return detailResponse.data;
-      })
-    );
-
-    // setPokemonData([...pokemondata, ...detailedPokemon]);
-    setPokemonData(detailedPokemon);
-
-    setLoading(false);
+    try {
+      const res = await axios.get(currentPageUrl);
+      setNextPage(res.data.next);
+      setPrevPage(res.data.previous);
+      const detailedPokemon = await Promise.all(
+        res.data.results.map(async (pokemon: Result) => {
+          const detailResponse = await axios.get(pokemon.url);
+          return detailResponse.data;
+        })
+      );
+      setPokemonData(detailedPokemon);
+    } catch (error) {
+      console.error('Error fetching Pokemon data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
-
   useEffect(() => {
     fetchPokemonall();
+    localStorage.setItem('currentPageUrl', currentPageUrl);
   }, [currentPageUrl]);
 
   function gotoNextPage() {
@@ -41,54 +47,78 @@ function App() {
   function gotoPrevPage() {
     prevPage && setCurrentPageUrl(prevPage);
   }
+  function resetToFirstPage() {
+    setCurrentPageUrl('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20');
+    localStorage.setItem(
+      'currentPageUrl',
+      'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20'
+    );
+  }
 
   return (
     <>
-      {loading && <Loading />}
-      <main className="min-h-screen p-3 sm:p-10 overflow-y-auto bg-Primary">
-        <h1 className="text-center text-3xl text-white font-bold my-4">
-          Pokedex
-        </h1>
-        <article className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 2xl:gap-4">
-          {pokemondata.map((pokemon) => {
-            return (
-              <Link to={`/${pokemon.id}`} key={pokemon.id}>
-                <div
-                  key={pokemon.id}
-                  className={`flex flex-col text-center p-4 bg-white gap-2   border-black border-4 rounded-xl shadow-md  hover:bg-${pokemon.types[0].type.name}`}
-                >
-                  <h4 className="text-end">
-                    #{pokemon.id.toString().padStart(4, '0')}
-                  </h4>
-                  <img
-                    src={
-                      pokemon.sprites.other?.['official-artwork'].front_default
-                    }
-                    alt={pokemon.name}
-                  />
-                  <h2 className=" sm:text-xl ">{pokemon.name}</h2>
-                </div>
-              </Link>
-            );
-          })}
-        </article>
-        <div className="flex justify-center gap-4 items-center p-2">
-          <button
-            className={`${!prevPage ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => gotoPrevPage()}
-            disabled={!prevPage}
+      {loading ? (
+        <Loading />
+      ) : (
+        <main className="min-h-screen p-3 sm:p-10 overflow-y-auto bg-Primary">
+          <h1
+            className="text-center text-3xl text-white font-bold my-4 cursor-pointer hover:text-black hover:drop-shadow-sm "
+            onClick={resetToFirstPage}
           >
-            Previous
-          </button>
-          <button
-            className={`${!nextPage ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => gotoNextPage()}
-            disabled={!prevPage}
-          >
-            Next
-          </button>
-        </div>
-      </main>
+            Pokedex
+          </h1>
+          <article className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 2xl:gap-4">
+            {pokemondata.map((pokemon) => {
+              return (
+                <Link to={`/${pokemon.id}`} key={pokemon.id}>
+                  <div
+                    key={pokemon.id}
+                    className={`flex flex-col text-center p-4 bg-white gap-2   border-black border-4 rounded-xl shadow-md  hover:bg-${pokemon.types[0].type.name}`}
+                  >
+                    <h4 className="text-end">
+                      #{pokemon.id.toString().padStart(4, '0')}
+                    </h4>
+                    <img
+                      src={
+                        pokemon.sprites.other?.['official-artwork']
+                          .front_default
+                      }
+                      alt={pokemon.name}
+                    />
+                    <h2 className=" sm:text-xl ">{pokemon.name}</h2>
+                  </div>
+                </Link>
+              );
+            })}
+          </article>
+          <div className="mt-5 flex justify-center gap-4 items-center p-2 ">
+            <button
+              className={`bg-white px-2.5 rounded-xl border-2 border-black   ${
+                !prevPage
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ' hover:text-white hover:bg-black hover:border-white'
+              }`}
+              onClick={gotoPrevPage}
+              disabled={!prevPage}
+            >
+              Previous
+            </button>
+            <button
+              className={`
+                bg-white px-2.5 rounded-xl border-2 border-black
+                ${
+                  !nextPage
+                    ? 'opacity-50 cursor-not-allowed'
+                    : ' hover:text-white hover:bg-black hover:border-white'
+                }`}
+              onClick={gotoNextPage}
+              disabled={!nextPage}
+            >
+              Next
+            </button>
+          </div>
+        </main>
+      )}
     </>
   );
 }
