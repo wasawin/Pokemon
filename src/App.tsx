@@ -10,10 +10,7 @@ function App() {
   const [nextPage, setNextPage] = useState<string>();
   const [prevPage, setPrevPage] = useState<string>();
   const [currentPageUrl, setCurrentPageUrl] = useState<string>(() => {
-    return (
-      localStorage.getItem('currentPageUrl') ||
-      'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20'
-    );
+    return 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20';
   });
 
   const fetchPokemonall = async () => {
@@ -70,7 +67,10 @@ function App() {
           <article className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 2xl:gap-4">
             {pokemondata.map((pokemon) => {
               return (
-                <Link to={`/${pokemon.id}`} key={pokemon.id}>
+                <Link
+                  to={`/${pokemon.id}?page=${currentPageUrl}`}
+                  key={pokemon.id}
+                >
                   <div
                     key={pokemon.id}
                     className={`flex flex-col text-center p-4 bg-white gap-2   border-black border-4 rounded-xl shadow-md  hover:bg-${pokemon.types[0].type.name}`}
