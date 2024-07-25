@@ -1,10 +1,14 @@
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useSearchParams } from 'react-router-dom';
 import { Pokemon } from '../type/PokemonType';
 import { IoIosArrowBack } from 'react-icons/io';
 import pokeball from '../assets/pokeball.png';
+import question from '../assets/question.png';
 
 function Detail() {
   const pokemon = useLoaderData() as Pokemon;
+  const [searchParams] = useSearchParams();
+  const offset = searchParams.get('offset') || '0';
+  const limit = searchParams.get('limit') || '20';
   return (
     <>
       <main className="min-h-screen w-full flex justify-center items-center  overflow-y-auto  bg-Primary">
@@ -17,7 +21,10 @@ function Detail() {
           >
             {/* tap on top */}
             <div className="flex justify-between items-center w-full font-bold text-white drop-shadow-lg">
-              <Link to="/" className="flex px-1 items-center gap-2 z-20 group">
+              <Link
+                to={`/?offset=${offset}&limit=${limit}`}
+                className="flex px-1 items-center gap-2 z-20 group"
+              >
                 <div className="rounded-full p-0.5 group-hover:bg-gray-200 ">
                   <IoIosArrowBack className="text-white group-hover:text-black" />
                 </div>
@@ -34,7 +41,11 @@ function Detail() {
 
             {/* image */}
             <img
-              src={pokemon.sprites.other?.['official-artwork'].front_default}
+              src={
+                pokemon.sprites.other?.['official-artwork']?.front_default
+                  ? pokemon.sprites.other?.['official-artwork']?.front_default
+                  : question
+              }
               alt={pokemon.name}
               className=" z-10  translate-y-20 sm:translate-y-7 mx-auto max-sm:max-w-60  "
             />

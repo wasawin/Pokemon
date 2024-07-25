@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Pokemon } from '../type/PokemonType';
 import { LoaderFunctionArgs } from 'react-router-dom';
+
 export const detailLoader = async ({
   params,
 }: LoaderFunctionArgs): Promise<Pokemon> => {
